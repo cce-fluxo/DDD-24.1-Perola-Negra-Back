@@ -8,8 +8,8 @@ export class CategoriaService {
 
   constructor(private readonly prisma: PrismaService ) {}
 
-  create(data: CreateCategoriaDto) {
-    const categoriaCriada = this.prisma.categoria.create({data})
+  async create(data: CreateCategoriaDto) {
+    const categoriaCriada = await this.prisma.categoria.create({data})
     return categoriaCriada;
   }
 
@@ -21,15 +21,17 @@ export class CategoriaService {
     return this.prisma.categoria.findUnique({where: {id}});
   }
 
-  update(id: number, updateCategoriaDto: UpdateCategoriaDto) {
-    return this.prisma.categoria.update({
-      where: {id}, 
-      data: updateCategoriaDto});
+  async update(id: number, updateCategoriaDto: UpdateCategoriaDto) {
+    const categoriaAtualizada = await this.prisma.categoria.update({
+      where: { id },
+      data: updateCategoriaDto,
+    });
+    return categoriaAtualizada;
   }
 
   async remove(id: number) {
     await this.prisma.categoria.delete({where: {id}});
-    return `categoria removido com sucesso!`
+    return `categoria removida com sucesso!`
 
   }
 }
