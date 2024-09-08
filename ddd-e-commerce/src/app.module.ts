@@ -21,10 +21,11 @@ import { RegistroClienteEnderecoModule } from './registro_cliente_endereco/regis
 import { RegistroPedidoProdutoModule } from './registro_pedido_produto/registro_pedido_produto.module';
 import { CupomModule } from './cupom/cupom.module';
 import { CarrinhoModule } from './carrinho/carrinho.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [BannerModule, AdministradorModule, PedidoModule, ProdutoModule, CategoriaModule, DescontoModule, FilialModule, EnderecoModule, PagamentoModule, ClienteModule, AvaliacaoModule, PerfilModule, RegistroProdutoDescontoModule, RegistroProdutoCarrinhoModule, RegistroFavoritadoModule, RegistroProdutoFilialModule, RegistroClienteEnderecoModule, RegistroPedidoProdutoModule, CupomModule, CarrinhoModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
