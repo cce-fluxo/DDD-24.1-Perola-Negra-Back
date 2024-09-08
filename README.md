@@ -5,3 +5,4 @@ Repositório para o back-end do time Pérola Negra do DDD de 24.1
 - [Documentação Nest JS](https://docs.nestjs.com/)
 - [Documentação Insomnia](https://docs.insomnia.rest/insomnia/get-started)
 - [Documentação Prisma](https://www.prisma.io/docs)
+- [Capacitação de Back - PAME/24.1](https://power-reptile-d0b.notion.site/4-MER-b26b71dec6f242448295cc3f956f7024)
