@@ -27,6 +27,7 @@ model Produto {
 
   categoria  Categoria?  @relation(fields: [id_categoria], references: [id])
   descontos Registro_produto_desconto[]
+  filiais Registro_produto_filial[]
   
 }
 
@@ -51,4 +52,34 @@ model Registro_produto_desconto {
 
   produto Produto @relation(fields: [id_produto], references: [id])
   desconto Desconto @relation(fields: [id_desconto], references: [id])
+}
+
+model Filial {
+  id Int @id @default(autoincrement())
+  nome String
+  id_endereco Int @unique
+
+  endereco Endereco @relation(fields: [id_endereco], references: [id])
+  produtos Registro_produto_filial[]
+}
+
+model Endereco {
+
+  id Int @id @default(autoincrement())
+  rua String
+  numero String
+  estado String
+  complemento String
+  cep String
+  filial Filial?
+}
+
+model Registro_produto_filial {
+  id Int @id @default(autoincrement())
+  qtd_produto Int
+  id_produto Int
+  id_filial Int
+
+  produto Produto @relation(fields: [id_produto], references: [id])
+  filial Filial @relation(fields: [id_filial], references: [id])
 }
