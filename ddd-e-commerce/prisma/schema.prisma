@@ -12,3 +12,204 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Produto {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  tamanho       String
+  cor           String
+  preco         Float
+  descricao     String
+  favoritado    Boolean
+  img_principal String
+  qtd_estoque   Int
+  categoriaId   Int
+  categoria     Categoria @relation(fields: [categoriaId], references: [id]) // relacao many-to-one entre Produto e Categoria, onde um produto pertence a uma categoria
+  descontos Registro_produto_desconto[]
+  carrinhos Registro_produto_carrinho[]
+  favoritos Registro_favoritado[]
+  avaliacoes Avaliacao[]
+  pedidos Registro_pedido_produto[]
+  filiais Registro_produto_filial[]
+}
+
+model Categoria {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  produtos Produto[]  // relacao one-to-many entre Categoria e Produto, onde uma categoria pode ter varios produtos
+}
+
+model Registro_produto_desconto {
+  id         Int       @id @default(autoincrement())
+  id_produto Int
+  id_desconto Int
+  produto Produto @relation(fields: [id_produto], references: [id])
+  desconto Desconto @relation(fields: [id_desconto], references: [id])
+}
+
+model Desconto {
+  id           Int                       @id @default(autoincrement())
+  pr_desconto  Float
+  dt_final     DateTime
+  produtos Registro_produto_desconto[]
+}
+
+
+model Pedido {
+  id            Int      @id @default(autoincrement())
+  codigo        String
+  qtd_produtos  Int
+  DT_entrega    DateTime
+  DT_envio      DateTime
+  DT_estimada   DateTime
+  DT_compra     DateTime
+  ST_pagamento  String
+  ST_entrega    String
+  VL_frete      Float
+  VL_total      Float
+  clienteId     Int
+  cliente       Cliente @relation(fields: [clienteId], references: [id]) // relacao many-to-one entre Pedido e Cliente, onde um pedido pertence a um cliente
+  enderecoId    Int
+  endereco      Endereco @relation(fields: [enderecoId], references: [id]) // relacao many-to-one entre Pedido e Endereco, onde um pedido tem um endereco de entrega
+  cupomId       Int
+  cupom         Cupom @relation(fields: [cupomId], references: [id]) // relacao many-to-one entre Pedido e Cupom, onde um pedido tem um cupom de desconto
+  pagamentoId   Int
+  pagamento     Pagamento @relation(fields: [pagamentoId], references: [id]) // relacao many-to-one entre Pedido e Pagamento, onde um pedido tem um pagamento
+  produtos      Registro_pedido_produto[]
+}
+
+model Registro_pedido_produto {
+  id        Int      @id @default(autoincrement())
+  qtd_produto Int
+  id_pedido Int
+  id_produto Int
+  pedido    Pedido @relation(fields: [id_pedido], references: [id])
+  produto   Produto @relation(fields: [id_produto], references: [id])
+}
+
+model Cliente {
+  id            Int       @id @default(autoincrement())
+  nome          String
+  genero        String
+  DT_nascimento DateTime
+  cpf           String
+  email         String
+  hash_senha    String
+  pedidos       Pedido[]
+  favoritos     Registro_favoritado[]
+  enderecos     Registro_cliente_endereco[]
+  avaliacoes    Avaliacao[]
+  id_perfil     Int? @unique // 1-1 com perfil
+  perfil        Perfil? @relation(fields: [id_perfil], references: [id]) // relacao one-to-one entre Cliente e Perfil, onde um cliente tem um perfil
+  carrinho      Carrinho?
+}
+
+model Endereco {
+  id          Int      @id @default(autoincrement())
+  rua         String
+  numero      Int
+  estado      String
+  complemento String
+  cep         String
+  pedidos     Pedido[]
+  clientes    Registro_cliente_endereco[]
+  filial      Filial?
+}
+
+model Cupom {
+  id          Int      @id @default(autoincrement())
+  codigo      String
+  PR_desconto Float
+  DT_validade DateTime
+  pedidos     Pedido[]
+}
+
+model Pagamento {
+  id         Int      @id @default(autoincrement())
+  cartao     Boolean
+  pix        Boolean
+  boleto     Boolean
+  pedidos    Pedido[]
+}
+
+model Carrinho {
+  id          Int      @id @default(autoincrement())
+  produtos    Registro_produto_carrinho[]
+  clienteId   Int @unique
+  cliente     Cliente @relation(fields: [clienteId], references: [id])
+}
+
+
+model Registro_produto_carrinho {
+  id          Int      @id @default(autoincrement())
+  qtd_produto Int
+  id_produto  Int
+  produto     Produto @relation(fields: [id_produto], references: [id])
+  id_carrinho Int
+  carrinho    Carrinho @relation(fields: [id_carrinho], references: [id])
+}
+
+model Registro_favoritado  {
+  id          Int      @id @default(autoincrement())
+  id_produto  Int
+  id_cliente  Int
+  produto     Produto @relation(fields: [id_produto], references: [id])
+  cliente     Cliente @relation(fields: [id_cliente], references: [id])
+}
+
+model Registro_cliente_endereco {
+  id        Int      @id @default(autoincrement())
+  nome     String
+  id_cliente Int
+  id_endereco Int
+  cliente   Cliente @relation(fields: [id_cliente], references: [id])
+  endereco  Endereco @relation(fields: [id_endereco], references: [id])
+}
+
+model Perfil {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  descricao String
+  cliente   Cliente? // relacao one-to-one entre Perfil e Cliente, onde um perfil pertence a um cliente
+}
+
+model Avaliacao {
+  id          Int      @id @default(autoincrement())
+  descricao  String
+  estrelas   Int
+  id_produto Int
+  produto    Produto @relation(fields: [id_produto], references: [id])
+  id_cliente Int
+  cliente    Cliente @relation(fields: [id_cliente], references: [id])
+}
+
+model Filial {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  produtos  Registro_produto_filial[]
+  id_endereco Int @unique
+  endereco  Endereco? @relation(fields: [id_endereco], references: [id])
+  // falta 1-1 com endereco
+}
+
+model Registro_produto_filial {
+  id        Int      @id @default(autoincrement())
+  qtd_produto Int
+  id_produto Int
+  id_filial Int
+  produto   Produto @relation(fields: [id_produto], references: [id])
+  filial    Filial @relation(fields: [id_filial], references: [id])
+}
+
+model Administrador {
+  id        Int      @id @default(autoincrement())
+  email     String
+  hash_senha String
+}
+
+model Banner {
+  id        Int      @id @default(autoincrement())
+  img_principal       String
+  img_2       String
+  img_3       String
+}
