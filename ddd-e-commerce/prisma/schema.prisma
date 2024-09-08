@@ -12,3 +12,43 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Produto {
+  id          Int        @id @default(autoincrement())
+  nome        String
+  tamanho     String
+  cor         String
+  preco       Float
+  descricao   String
+  favoritado  Boolean //faz sentido deixar o favoritado em produto? nao seria o cliente que teria varios produtos favoritados?
+  img_principal String
+  qtd_estoque Int
+  id_categoria Int?
+
+  categoria  Categoria?  @relation(fields: [id_categoria], references: [id])
+  descontos Registro_produto_desconto[]
+  
+}
+
+model Categoria {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  produtos Produto[]
+}
+
+model Desconto {
+  id           Int                       @id @default(autoincrement())
+  pr_desconto  Float
+  dt_final     DateTime
+
+  produtos Registro_produto_desconto[]
+}
+
+model Registro_produto_desconto {
+  id         Int       @id @default(autoincrement())
+  id_produto Int
+  id_desconto Int
+
+  produto Produto @relation(fields: [id_produto], references: [id])
+  desconto Desconto @relation(fields: [id_desconto], references: [id])
+}
