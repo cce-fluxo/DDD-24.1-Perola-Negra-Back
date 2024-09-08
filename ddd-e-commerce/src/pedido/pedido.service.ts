@@ -1,26 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
 
 @Injectable()
 export class PedidoService {
-  create(createPedidoDto: CreatePedidoDto) {
-    return 'This action adds a new pedido';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria um novo pedido
+  async create(data: CreatePedidoDto) {
+    // Adicione qualquer validação ou lógica adicional aqui, se necessário
+
+    const pedidoCriado = await this.prisma.pedido.create({ data });
+    return pedidoCriado;
   }
 
-  findAll() {
-    return `This action returns all pedido`;
+  // Retorna todos os pedidos
+  async findAll() {
+    return this.prisma.pedido.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pedido`;
+  // Retorna um pedido específico por ID
+  async findOne(id: number) {
+    const pedido = await this.prisma.pedido.findUnique({ where: { id } });
+    if (!pedido) {
+      throw new BadRequestException(`Pedido com ID ${id} não encontrado.`);
+    }
+    return pedido;
   }
 
-  update(id: number, updatePedidoDto: UpdatePedidoDto) {
-    return `This action updates a #${id} pedido`;
+  // Atualiza um pedido existente
+  async update(id: number, updatePedidoDto: UpdatePedidoDto) {
+    const pedidoAtualizado = await this.prisma.pedido.update({
+      where: { id },
+      data: updatePedidoDto,
+    });
+    return pedidoAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pedido`;
+  // Remove um pedido existente
+  async remove(id: number) {
+    await this.prisma.pedido.delete({ where: { id } });
+    return `Pedido com ID ${id} removido com sucesso!`;
   }
 }

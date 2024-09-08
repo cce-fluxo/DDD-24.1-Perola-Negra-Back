@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCupomDto } from './dto/create-cupom.dto';
 import { UpdateCupomDto } from './dto/update-cupom.dto';
 
 @Injectable()
 export class CupomService {
-  create(createCupomDto: CreateCupomDto) {
-    return 'This action adds a new cupom';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria um novo cupom
+  async create(data: CreateCupomDto) {
+    const cupomCriado = await this.prisma.cupom.create({ data });
+    return cupomCriado;
   }
 
-  findAll() {
-    return `This action returns all cupom`;
+  // Retorna todos os cupons
+  async findAll() {
+    return this.prisma.cupom.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cupom`;
+  // Retorna um cupom específico por ID
+  async findOne(id: number) {
+    return this.prisma.cupom.findUnique({ where: { id } });
   }
 
-  update(id: number, updateCupomDto: UpdateCupomDto) {
-    return `This action updates a #${id} cupom`;
+  // Atualiza um cupom existente
+  async update(id: number, updateCupomDto: UpdateCupomDto) {
+    const cupomAtualizado = await this.prisma.cupom.update({
+      where: { id },
+      data: updateCupomDto,
+    });
+    return cupomAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cupom`;
+  // Remove um cupom existente
+  async remove(id: number) {
+    await this.prisma.cupom.delete({ where: { id } });
+    return `Cupom com ID ${id} removido com sucesso!`;
   }
 }

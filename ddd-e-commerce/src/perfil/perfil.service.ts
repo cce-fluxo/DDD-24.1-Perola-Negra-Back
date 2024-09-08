@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePerfilDto } from './dto/create-perfil.dto';
 import { UpdatePerfilDto } from './dto/update-perfil.dto';
 
 @Injectable()
 export class PerfilService {
-  create(createPerfilDto: CreatePerfilDto) {
-    return 'This action adds a new perfil';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria um novo perfil
+  async create(data: CreatePerfilDto) {
+    const perfilCriado = await this.prisma.perfil.create({ data });
+    return perfilCriado;
   }
 
-  findAll() {
-    return `This action returns all perfil`;
+  // Retorna todos os perfis
+  async findAll() {
+    return this.prisma.perfil.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} perfil`;
+  // Retorna um perfil específico por ID
+  async findOne(id: number) {
+    return this.prisma.perfil.findUnique({ where: { id } });
   }
 
-  update(id: number, updatePerfilDto: UpdatePerfilDto) {
-    return `This action updates a #${id} perfil`;
+  // Atualiza um perfil existente
+  async update(id: number, updatePerfilDto: UpdatePerfilDto) {
+    const perfilAtualizado = await this.prisma.perfil.update({
+      where: { id },
+      data: updatePerfilDto,
+    });
+    return perfilAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} perfil`;
+  // Remove um perfil existente
+  async remove(id: number) {
+    await this.prisma.perfil.delete({ where: { id } });
+    return `Perfil com ID ${id} removido com sucesso!`;
   }
 }
