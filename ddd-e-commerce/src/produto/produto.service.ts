@@ -8,8 +8,8 @@ export class ProdutoService {
 
   constructor(private readonly prisma: PrismaService ) {}
 
-  create(data: CreateProdutoDto) {
-    const produtoCriado = this.prisma.produto.create({data})
+  async create(data: CreateProdutoDto) {
+    const produtoCriado = await this.prisma.produto.create({data})
     return produtoCriado;
   }
 
@@ -25,10 +25,12 @@ export class ProdutoService {
     return this.prisma.produto.findUnique({where: {id}});
   }
 
-  update(id: number, updateProdutoDto: UpdateProdutoDto) {
-    return this.prisma.produto.update({
-      where: {id}, 
-      data: updateProdutoDto});
+  async update(id: number, updateprodutoDto: UpdateProdutoDto) {
+    const produtoAtualizado = await this.prisma.produto.update({
+      where: { id },
+      data: updateprodutoDto,
+    });
+    return produtoAtualizado;
   }
 
   async remove(id: number) {
