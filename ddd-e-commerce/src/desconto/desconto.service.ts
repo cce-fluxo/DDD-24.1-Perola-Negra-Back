@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDescontoDto } from './dto/create-desconto.dto';
 import { UpdateDescontoDto } from './dto/update-desconto.dto';
 
 @Injectable()
 export class DescontoService {
-  create(createDescontoDto: CreateDescontoDto) {
-    return 'This action adds a new desconto';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria um novo desconto
+  async create(data: CreateDescontoDto) {
+    const descontoCriado = await this.prisma.desconto.create({ data });
+    return descontoCriado;
   }
 
-  findAll() {
-    return `This action returns all desconto`;
+  // Retorna todos os descontos
+  async findAll() {
+    return this.prisma.desconto.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} desconto`;
+  // Retorna um desconto específico por ID
+  async findOne(id: number) {
+    return this.prisma.desconto.findUnique({ where: { id } });
   }
 
-  update(id: number, updateDescontoDto: UpdateDescontoDto) {
-    return `This action updates a #${id} desconto`;
+  // Atualiza um desconto existente
+  async update(id: number, updateDescontoDto: UpdateDescontoDto) {
+    const descontoAtualizado = await this.prisma.desconto.update({
+      where: { id },
+      data: updateDescontoDto,
+    });
+    return descontoAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} desconto`;
+  // Remove um desconto existente
+  async remove(id: number) {
+    await this.prisma.desconto.delete({ where: { id } });
+    return `Desconto com ID ${id} removido com sucesso!`;
   }
 }

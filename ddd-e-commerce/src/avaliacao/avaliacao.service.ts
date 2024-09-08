@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateAvaliacaoDto } from './dto/create-avaliacao.dto';
 import { UpdateAvaliacaoDto } from './dto/update-avaliacao.dto';
 
 @Injectable()
 export class AvaliacaoService {
-  create(createAvaliacaoDto: CreateAvaliacaoDto) {
-    return 'This action adds a new avaliacao';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria uma nova avaliação
+  async create(data: CreateAvaliacaoDto) {
+    const avaliacaoCriada = await this.prisma.avaliacao.create({ data });
+    return avaliacaoCriada;
   }
 
-  findAll() {
-    return `This action returns all avaliacao`;
+  // Retorna todas as avaliações
+  async findAll() {
+    return this.prisma.avaliacao.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} avaliacao`;
+  // Retorna uma avaliação específica por ID
+  async findOne(id: number) {
+    return this.prisma.avaliacao.findUnique({ where: { id } });
   }
 
-  update(id: number, updateAvaliacaoDto: UpdateAvaliacaoDto) {
-    return `This action updates a #${id} avaliacao`;
+  // Atualiza uma avaliação existente
+  async update(id: number, updateAvaliacaoDto: UpdateAvaliacaoDto) {
+    const avaliacaoAtualizada = await this.prisma.avaliacao.update({
+      where: { id },
+      data: updateAvaliacaoDto,
+    });
+    return avaliacaoAtualizada;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} avaliacao`;
+  // Remove uma avaliação existente
+  async remove(id: number) {
+    await this.prisma.avaliacao.delete({ where: { id } });
+    return `Avaliação com ID ${id} removida com sucesso!`;
   }
 }

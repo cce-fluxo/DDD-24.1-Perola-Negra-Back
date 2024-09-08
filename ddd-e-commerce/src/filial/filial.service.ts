@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFilialDto } from './dto/create-filial.dto';
 import { UpdateFilialDto } from './dto/update-filial.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class FilialService {
-  create(createFilialDto: CreateFilialDto) {
-    return 'This action adds a new filial';
+
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(data: CreateFilialDto) {
+    const filialCriada = await this.prisma.filial.create({ data });
+    return filialCriada;
   }
 
-  findAll() {
-    return `This action returns all filial`;
+  async findAll() {
+    return this.prisma.filial.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} filial`;
+  async findOne(id: number) {
+    return this.prisma.filial.findUnique({ where: { id } });
   }
 
-  update(id: number, updateFilialDto: UpdateFilialDto) {
-    return `This action updates a #${id} filial`;
+  async update(id: number, updateFilialDto: UpdateFilialDto) {
+    const filialAtualizada = await this.prisma.filial.update({
+      where: { id },
+      data: updateFilialDto,
+    });
+    return filialAtualizada;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} filial`;
+  async remove(id: number) {
+    await this.prisma.filial.delete({ where: { id } });
+    return `Filial removida com sucesso!`;
   }
 }

@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCarrinhoDto } from './dto/create-carrinho.dto';
 import { UpdateCarrinhoDto } from './dto/update-carrinho.dto';
 
 @Injectable()
 export class CarrinhoService {
-  create(createCarrinhoDto: CreateCarrinhoDto) {
-    return 'This action adds a new carrinho';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria um novo carrinho
+  async create(data: CreateCarrinhoDto) {
+    const carrinhoCriado = await this.prisma.carrinho.create({ data });
+    return carrinhoCriado;
   }
 
-  findAll() {
-    return `This action returns all carrinho`;
+  // Retorna todos os carrinhos
+  async findAll() {
+    return this.prisma.carrinho.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} carrinho`;
+  // Retorna um carrinho específico por ID
+  async findOne(id: number) {
+    return this.prisma.carrinho.findUnique({ where: { id } });
   }
 
-  update(id: number, updateCarrinhoDto: UpdateCarrinhoDto) {
-    return `This action updates a #${id} carrinho`;
+  // Atualiza um carrinho existente
+  async update(id: number, updateCarrinhoDto: UpdateCarrinhoDto) {
+    const carrinhoAtualizado = await this.prisma.carrinho.update({
+      where: { id },
+      data: updateCarrinhoDto,
+    });
+    return carrinhoAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} carrinho`;
+  // Remove um carrinho existente
+  async remove(id: number) {
+    await this.prisma.carrinho.delete({ where: { id } });
+    return `Carrinho com ID ${id} removido com sucesso!`;
   }
 }
