@@ -9,7 +9,9 @@ export class RegistroClienteEnderecoService {
 
   // Cria um novo registro de cliente e endereço
   async create(data: CreateRegistroClienteEnderecoDto) {
-    const registroCriado = await this.prisma.registro_cliente_endereco.create({ data });
+    const registroCriado = await this.prisma.registro_cliente_endereco.create({
+      data,
+    });
     return registroCriado;
   }
 
@@ -24,11 +26,15 @@ export class RegistroClienteEnderecoService {
   }
 
   // Atualiza um registro existente
-  async update(id: number, updateRegistroClienteEnderecoDto: UpdateRegistroClienteEnderecoDto) {
-    const registroAtualizado = await this.prisma.registro_cliente_endereco.update({
-      where: { id },
-      data: updateRegistroClienteEnderecoDto,
-    });
+  async update(
+    id: number,
+    updateRegistroClienteEnderecoDto: UpdateRegistroClienteEnderecoDto,
+  ) {
+    const registroAtualizado =
+      await this.prisma.registro_cliente_endereco.update({
+        where: { id },
+        data: updateRegistroClienteEnderecoDto,
+      });
     return registroAtualizado;
   }
 
