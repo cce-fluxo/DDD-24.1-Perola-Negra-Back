@@ -4,12 +4,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors({
+    origin: 'localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  });
   const config = new DocumentBuilder()
     .setTitle('E-commerce Perola Negra')
     .setDescription('Ditadura da Carol')
     .setVersion('1.0')
-    .addTag('Ecommerce')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
