@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRegistroPedidoProdutoDto } from './dto/create-registro_pedido_produto.dto';
 import { UpdateRegistroPedidoProdutoDto } from './dto/update-registro_pedido_produto.dto';
 
 @Injectable()
 export class RegistroPedidoProdutoService {
-  create(createRegistroPedidoProdutoDto: CreateRegistroPedidoProdutoDto) {
-    return 'This action adds a new registroPedidoProduto';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria um novo registro de pedido e produto
+  async create(data: CreateRegistroPedidoProdutoDto) {
+    const registroCriado = await this.prisma.registro_pedido_produto.create({ data });
+    return registroCriado;
   }
 
-  findAll() {
-    return `This action returns all registroPedidoProduto`;
+  // Retorna todos os registros de pedido e produto
+  async findAll() {
+    return this.prisma.registro_pedido_produto.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} registroPedidoProduto`;
+  // Retorna um registro específico por ID
+  async findOne(id: number) {
+    return this.prisma.registro_pedido_produto.findUnique({ where: { id } });
   }
 
-  update(id: number, updateRegistroPedidoProdutoDto: UpdateRegistroPedidoProdutoDto) {
-    return `This action updates a #${id} registroPedidoProduto`;
+  // Atualiza um registro existente
+  async update(id: number, updateRegistroPedidoProdutoDto: UpdateRegistroPedidoProdutoDto) {
+    const registroAtualizado = await this.prisma.registro_pedido_produto.update({
+      where: { id },
+      data: updateRegistroPedidoProdutoDto,
+    });
+    return registroAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} registroPedidoProduto`;
+  // Remove um registro existente
+  async remove(id: number) {
+    await this.prisma.registro_pedido_produto.delete({ where: { id } });
+    return `Registro de pedido e produto com ID ${id} removido com sucesso!`;
   }
 }
