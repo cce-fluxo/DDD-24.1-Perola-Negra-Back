@@ -7,6 +7,7 @@ export class CreateAdministradorDto {
     required: true,
   })
   email: string;
+
   @ApiProperty({
     description: 'Senha do administrador',
     example: '123456',
