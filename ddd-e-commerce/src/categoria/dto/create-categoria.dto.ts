@@ -1,5 +1,9 @@
-import { Produto } from "@prisma/client";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCategoriaDto {
-    nome: string;
+  @ApiProperty({
+    description: 'Nome da categoria',
+    example: 'Blusas',
+  })
+  nome: string;
 }
