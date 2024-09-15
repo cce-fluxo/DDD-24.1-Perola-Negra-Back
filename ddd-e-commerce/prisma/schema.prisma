@@ -60,7 +60,7 @@ model Desconto {
 
 model Pedido {
   id            Int      @id @default(autoincrement())
-  codigo        String
+  codigo        Int @default(autoincrement()) @unique //Criar automaticamente?
   qtd_produtos  Int
   DT_entrega    DateTime
   DT_envio      DateTime
