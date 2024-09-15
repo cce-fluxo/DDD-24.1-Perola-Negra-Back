@@ -1,6 +1,23 @@
+import { ApiProperty } from "@nestjs/swagger";
+
 export class CreatePagamentoDto {
-    cartao: boolean;  // Indica se o pagamento foi feito com cartão
-    pix: boolean;     // Indica se o pagamento foi feito via PIX
-    boleto: boolean;  // Indica se o pagamento foi feito via boleto
-  }
-  
+
+    /**
+     * Verifica se o pagamento foi feito com cartao
+     * @example true
+     */
+    cartao: boolean;    
+
+    
+    /**
+     * Verifica se o pagamento foi feito com pix
+     * @example false
+     */
+    pix: boolean;       
+
+     /**
+     * Verifica se o pagamento foi feito com boleto
+     * @example false
+     */
+    boleto: boolean;  
+}

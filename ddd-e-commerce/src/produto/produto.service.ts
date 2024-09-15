@@ -9,7 +9,7 @@ export class ProdutoService {
   constructor(private readonly prisma: PrismaService ) {}
 
   async create(data: CreateProdutoDto) {
-    const produtoCriado = await this.prisma.produto.create({data})
+    const produtoCriado = await this.prisma.produto.create({ data })
     return produtoCriado;
   }
 
