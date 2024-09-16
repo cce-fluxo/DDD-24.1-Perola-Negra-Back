@@ -1,26 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRegistroProdutoFilialDto } from './dto/create-registro_produto_filial.dto';
 import { UpdateRegistroProdutoFilialDto } from './dto/update-registro_produto_filial.dto';
 
 @Injectable()
 export class RegistroProdutoFilialService {
-  create(createRegistroProdutoFilialDto: CreateRegistroProdutoFilialDto) {
-    return 'This action adds a new registroProdutoFilial';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria um novo registro de produto e filial
+  async create(data: CreateRegistroProdutoFilialDto) {
+    const registroCriado = await this.prisma.registro_produto_filial.create({
+      data,
+    });
+    return registroCriado;
   }
 
-  findAll() {
-    return `This action returns all registroProdutoFilial`;
+  // Retorna todos os registros de produto e filial
+  async findAll() {
+    return this.prisma.registro_produto_filial.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} registroProdutoFilial`;
+  // Retorna um registro específico por ID
+  async findOne(id: number) {
+    return this.prisma.registro_produto_filial.findUnique({ where: { id } });
   }
 
-  update(id: number, updateRegistroProdutoFilialDto: UpdateRegistroProdutoFilialDto) {
-    return `This action updates a #${id} registroProdutoFilial`;
+  // Atualiza um registro existente
+  async update(
+    id: number,
+    updateRegistroProdutoFilialDto: UpdateRegistroProdutoFilialDto,
+  ) {
+    const registroAtualizado =
+      await this.prisma.registro_produto_filial.update({
+        where: { id },
+        data: updateRegistroProdutoFilialDto,
+      });
+    return registroAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} registroProdutoFilial`;
+  // Remove um registro existente
+  async remove(id: number) {
+    await this.prisma.registro_produto_filial.delete({ where: { id } });
+    return `Registro de produto e filial com ID ${id} removido com sucesso!`;
   }
 }
