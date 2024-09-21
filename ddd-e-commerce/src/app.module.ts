@@ -22,9 +22,10 @@ import { RegistroPedidoProdutoModule } from './registro_pedido_produto/registro_
 import { CupomModule } from './cupom/cupom.module';
 import { CarrinhoModule } from './carrinho/carrinho.module';
 import { PrismaService } from './prisma/prisma.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [BannerModule, AdministradorModule, PedidoModule, ProdutoModule, CategoriaModule, DescontoModule, FilialModule, EnderecoModule, PagamentoModule, ClienteModule, AvaliacaoModule, PerfilModule, RegistroProdutoDescontoModule, RegistroProdutoCarrinhoModule, RegistroFavoritadoModule, RegistroProdutoFilialModule, RegistroClienteEnderecoModule, RegistroPedidoProdutoModule, CupomModule, CarrinhoModule],
+  imports: [BannerModule, AdministradorModule, PedidoModule, ProdutoModule, CategoriaModule, DescontoModule, FilialModule, EnderecoModule, PagamentoModule, ClienteModule, AvaliacaoModule, PerfilModule, RegistroProdutoDescontoModule, RegistroProdutoCarrinhoModule, RegistroFavoritadoModule, RegistroProdutoFilialModule, RegistroClienteEnderecoModule, RegistroPedidoProdutoModule, CupomModule, CarrinhoModule, AuthModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

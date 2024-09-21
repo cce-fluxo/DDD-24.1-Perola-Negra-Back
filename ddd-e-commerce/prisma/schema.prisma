@@ -96,7 +96,7 @@ model Cliente {
   genero        String
   DT_nascimento DateTime
   cpf           String
-  email         String
+  email         String @unique
   hash_senha    String
   pedidos       Pedido[]
   favoritos     Registro_favoritado[]

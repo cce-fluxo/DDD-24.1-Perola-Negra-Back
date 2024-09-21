@@ -23,6 +23,10 @@ export class ClienteService {
     return this.prisma.cliente.findUnique({ where: { id } });
   }
 
+  async findByEmail(email: string){
+    return this.prisma.cliente.findUnique({ where : {email:email} });
+  }
+
   // Atualiza um cliente existente
   async update(id: number, updateClienteDto: UpdateClienteDto) {
     const clienteAtualizado = await this.prisma.cliente.update({
