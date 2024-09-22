@@ -2,16 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class ClienteService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // Cria um novo cliente
+ // Cria um novo cliente
   async create(data: CreateClienteDto) {
-    const clienteCriado = await this.prisma.cliente.create({ data });
+    const clienteCriado = await this.prisma.cliente.create({ 
+      data: { 
+        ...data,
+        hash_senha: await bcrypt.hash(data.hash_senha, 10)
+      }
+    });
+
     return clienteCriado;
   }
+
 
   // Retorna todos os clientes
   async findAll() {

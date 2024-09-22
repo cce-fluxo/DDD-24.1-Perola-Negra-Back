@@ -23,10 +23,15 @@ import { CupomModule } from './cupom/cupom.module';
 import { CarrinhoModule } from './carrinho/carrinho.module';
 import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
+import { LocalStrategy } from './auth/strategies/localstrategy';
+import { JwtService } from '@nestjs/jwt';
+import { ClienteService } from './cliente/cliente.service';
+import { JwtStrategy } from './auth/strategies/jwt-strategy';
 
 @Module({
   imports: [BannerModule, AdministradorModule, PedidoModule, ProdutoModule, CategoriaModule, DescontoModule, FilialModule, EnderecoModule, PagamentoModule, ClienteModule, AvaliacaoModule, PerfilModule, RegistroProdutoDescontoModule, RegistroProdutoCarrinhoModule, RegistroFavoritadoModule, RegistroProdutoFilialModule, RegistroClienteEnderecoModule, RegistroPedidoProdutoModule, CupomModule, CarrinhoModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, AuthService, LocalStrategy, JwtService, ClienteService, JwtStrategy]
 })
 export class AppModule {}
