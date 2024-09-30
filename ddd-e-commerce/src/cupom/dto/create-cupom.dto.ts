@@ -1,9 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCupomDto {
+
+  @ApiProperty({
+    description: 'Nome do cupom',
+    example: 'DESC20',
+  })
+  nome: string;
+
   @ApiProperty({
     description: 'Código do cupom',
-    example: 'DESC20',
+    example: '#12345678',
   })
   codigo: string;
 
