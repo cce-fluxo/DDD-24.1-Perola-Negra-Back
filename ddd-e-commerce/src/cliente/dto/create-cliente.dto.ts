@@ -57,5 +57,8 @@ export class CreateClienteDto {
     example: 1,
     required: false,
   })
-  id_perfil?: number;
+  @IsOptional()
+  @IsNotEmpty()
+  id_perfil?: number; 
 }
+

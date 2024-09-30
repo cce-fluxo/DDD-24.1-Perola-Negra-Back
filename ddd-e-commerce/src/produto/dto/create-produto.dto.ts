@@ -1,57 +1,77 @@
-export class CreateProdutoDto {
+import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-  /**
-   * Define o nome do produto
-   * @example Tênis Esportivo
-   */
+export class CreateProdutoDto {
+  
+  @ApiProperty({
+    description: 'Define o nome do produto',
+    example: 'Tênis Esportivo',
+  })
+  @IsNotEmpty()
+  @IsString()
   nome: string;
 
-  /**
-   * Define o tamanho do produto
-   * @example M
-   */
+  @ApiProperty({
+    description: 'Define o tamanho do produto',
+    example: 'M',
+  })
+  @IsNotEmpty()
+  @IsString()
   tamanho: string;
 
-  /**
-   * Define a cor do produto
-   * @example Preto
-   */
+  @ApiProperty({
+    description: 'Define a cor do produto',
+    example: 'Preto',
+  })
+  @IsNotEmpty()
+  @IsString()
   cor: string;
 
-  /**
-   * Define o preço do produto
-   * @example 199.99
-   */
+  @ApiProperty({
+    description: 'Define o preço do produto',
+    example: 199.99,
+  })
+  @IsNotEmpty()
+  @IsNumber()
   preco: number;
 
-  /**
-   * Define a descrição do produto
-   * @example Tênis confortável para corridas e atividades físicas.
-   */
+  @ApiProperty({
+    description: 'Define a descrição do produto',
+    example: 'Tênis confortável para corridas e atividades físicas.',
+  })
+  @IsNotEmpty()
+  @IsString()
   descricao: string;
 
-  /**
-   * Define a URL da imagem principal do produto
-   * @example https//example.com/imagem-principal.jpg
-   */
+  @ApiProperty({
+    description: 'Define a URL da imagem principal do produto',
+    example: 'https://example.com/imagem-principal.jpg',
+  })
+  @IsNotEmpty()
+  @IsString()
   img_principal: string;
 
-  /**
-   * Define a quantidade em estoque do produto
-   * @example 50
-   */
+  @ApiProperty({
+    description: 'Define a quantidade em estoque do produto',
+    example: 50,
+  })
+  @IsNotEmpty()
+  @IsNumber()
   qtd_estoque: number;
 
-  /**
-   * Define a categoria do produto (opcional)
-   * @example 1
-   */
+  @ApiProperty({
+    description: 'Define a categoria do produto (opcional)',
+    example: 1,
+  })
+  @IsOptional()
+  @IsNumber()
   id_categoria?: number;
 
-  /**
-   * Indica se o produto foi favoritado (opcional)
-   * @example true
-   */
+  @ApiProperty({
+    description: 'Indica se o produto foi favoritado (opcional)',
+    example: true,
+  })
+  @IsNotEmpty()
+  @IsBoolean()
   favoritado: boolean;
 }
-

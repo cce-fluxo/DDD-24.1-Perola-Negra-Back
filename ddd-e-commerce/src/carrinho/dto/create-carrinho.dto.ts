@@ -1,9 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsNumber } from "class-validator";
 
 export class CreateCarrinhoDto {
+
   @ApiProperty({
-    description: 'ID do produto no carrinho',
+    description: 'ID do cliente que possui o carrinho',
     example: 1,
   })
+  @IsNotEmpty()
+  @IsNumber()
   clienteId: number;
 }
