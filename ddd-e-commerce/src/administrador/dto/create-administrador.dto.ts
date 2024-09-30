@@ -1,17 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateAdministradorDto {
+
   @ApiProperty({
     description: 'Email do administrador',
     example: 'adm@gmail.com',
-    required: true,
   })
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @ApiProperty({
     description: 'Senha do administrador',
     example: '123456',
-    required: true,
   })
+  @IsNotEmpty()
+  @IsString()
   hash_senha: string;
 }

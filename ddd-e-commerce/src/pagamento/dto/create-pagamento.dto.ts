@@ -1,23 +1,26 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsBoolean } from "class-validator";
 
 export class CreatePagamentoDto {
 
-    /**
-     * Verifica se o pagamento foi feito com cartao
-     * @example true
-     */
-    cartao: boolean;    
+  @ApiProperty({
+    description: 'Verifica se o pagamento foi feito com cartão',
+    example: true,
+  })
+  @IsBoolean()
+  cartao: boolean;
 
-    
-    /**
-     * Verifica se o pagamento foi feito com pix
-     * @example false
-     */
-    pix: boolean;       
+  @ApiProperty({
+    description: 'Verifica se o pagamento foi feito com Pix',
+    example: false,
+  })
+  @IsBoolean()
+  pix: boolean;
 
-     /**
-     * Verifica se o pagamento foi feito com boleto
-     * @example false
-     */
-    boleto: boolean;  
+  @ApiProperty({
+    description: 'Verifica se o pagamento foi feito com boleto',
+    example: false,
+  })
+  @IsBoolean()
+  boleto: boolean;
 }

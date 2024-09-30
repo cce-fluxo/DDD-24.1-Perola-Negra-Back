@@ -26,8 +26,8 @@ model Produto {
   favoritado    Boolean
   img_principal String
   qtd_estoque   Int
-  categoriaId   Int?
-  categoria     Categoria? @relation(fields: [categoriaId], references: [id]) // relacao many-to-one entre Produto e Categoria, onde um produto pertence a uma categoria
+  id_categoria   Int?
+  categoria     Categoria? @relation(fields: [id_categoria], references: [id]) // relacao many-to-one entre Produto e Categoria, onde um produto pertence a uma categoria
   descontos Registro_produto_desconto[]
   carrinhos Registro_produto_carrinho[]
   favoritos Registro_favoritado[]

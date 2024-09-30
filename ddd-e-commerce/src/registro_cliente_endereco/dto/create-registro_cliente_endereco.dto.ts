@@ -1,20 +1,30 @@
-export class CreateRegistroClienteEnderecoDto {
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-  /**
-   * Define o nome do registro
-   * @example "Endereço Principal"
-   */
+export class CreateRegistroClienteEnderecoDto {
+  
+  @ApiProperty({
+    description: 'Define o nome do registro',
+    example: 'Endereço Principal',
+  })
+  @IsNotEmpty()
+  @IsString()
   nome: string;
 
-  /**
-   * Define o ID do cliente associado ao registro
-   * @example 1
-   */
+  @ApiProperty({
+    description: 'Define o ID do cliente associado ao registro',
+    example: 1,
+  })
+  @IsNotEmpty()
+  @IsNumber()
   id_cliente: number;
 
-  /**
-   * Define o ID do endereço associado ao registro
-   * @example 1
-   */
+  @ApiProperty({
+    description: 'Define o ID do endereço associado ao registro',
+    example: 1,
+  })
+  @IsNotEmpty()
+  @IsNumber()
   id_endereco: number;
 }
+
