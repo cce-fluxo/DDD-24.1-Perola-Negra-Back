@@ -122,6 +122,7 @@ model Endereco {
 model Cupom {
   id          Int      @id @default(autoincrement())
   codigo      String
+  nome        String
   PR_desconto Float
   DT_validade DateTime
   pedidos     Pedido[]
