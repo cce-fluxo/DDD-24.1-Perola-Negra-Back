@@ -101,7 +101,6 @@ CREATE TABLE "Endereco" (
 CREATE TABLE "Cupom" (
     "id" SERIAL NOT NULL,
     "codigo" TEXT NOT NULL,
-    "nome" TEXT NOT NULL,
     "PR_desconto" DOUBLE PRECISION NOT NULL,
     "DT_validade" TIMESTAMP(3) NOT NULL,
 
@@ -215,9 +214,6 @@ CREATE TABLE "Banner" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Pedido_codigo_key" ON "Pedido"("codigo");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Cliente_email_key" ON "Cliente"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Cliente_id_perfil_key" ON "Cliente"("id_perfil");
