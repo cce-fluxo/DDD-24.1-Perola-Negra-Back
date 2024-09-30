@@ -15,7 +15,9 @@ export class AuthService {
     async validateUser(email: string, password: string) {
         const user = await this.userService.findByEmail(email);
 
-        if (!user || !(bcrypt.compare(user.hash_senha, password))) {
+        const senha_valida = await bcrypt.compare(password, user.hash_senha);
+
+        if (!user || !(senha_valida)) {
             throw new Error('Credenciais inválidas');
         }
 
