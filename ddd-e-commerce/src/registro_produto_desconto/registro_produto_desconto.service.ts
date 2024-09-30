@@ -1,26 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRegistroProdutoDescontoDto } from './dto/create-registro_produto_desconto.dto';
 import { UpdateRegistroProdutoDescontoDto } from './dto/update-registro_produto_desconto.dto';
 
 @Injectable()
 export class RegistroProdutoDescontoService {
-  create(createRegistroProdutoDescontoDto: CreateRegistroProdutoDescontoDto) {
-    return 'This action adds a new registroProdutoDesconto';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Cria um novo registro de produto e deconto
+  async create(data: CreateRegistroProdutoDescontoDto) {
+    const registroCriado = await this.prisma.registro_produto_desconto.create({
+      data,
+    });
+    return registroCriado;
   }
 
-  findAll() {
-    return `This action returns all registroProdutoDesconto`;
+  // Retorna todos os registros de produto e desconto
+  async findAll() {
+    return this.prisma.registro_produto_desconto.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} registroProdutoDesconto`;
+  // Retorna um registro específico por ID
+  async findOne(id: number) {
+    return this.prisma.registro_produto_desconto.findUnique({ where: { id } });
   }
 
-  update(id: number, updateRegistroProdutoDescontoDto: UpdateRegistroProdutoDescontoDto) {
-    return `This action updates a #${id} registroProdutoDesconto`;
+  // Atualiza um registro existente
+  async update(
+    id: number,
+    updateRegistroProdutoDescontoDto: UpdateRegistroProdutoDescontoDto,
+  ) {
+    const registroAtualizado =
+      await this.prisma.registro_produto_desconto.update({
+        where: { id },
+        data: updateRegistroProdutoDescontoDto,
+      });
+    return registroAtualizado;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} registroProdutoDesconto`;
+  // Remove um registro existente
+  async remove(id: number) {
+    await this.prisma.registro_produto_desconto.delete({ where: { id } });
+    return `Registro de produto e desconto com ID ${id} removido com sucesso!`;
   }
 }

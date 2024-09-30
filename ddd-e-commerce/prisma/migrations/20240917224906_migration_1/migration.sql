@@ -43,7 +43,7 @@ CREATE TABLE "Desconto" (
 -- CreateTable
 CREATE TABLE "Pedido" (
     "id" SERIAL NOT NULL,
-    "codigo" TEXT NOT NULL,
+    "codigo" SERIAL NOT NULL,
     "qtd_produtos" INTEGER NOT NULL,
     "DT_entrega" TIMESTAMP(3) NOT NULL,
     "DT_envio" TIMESTAMP(3) NOT NULL,
@@ -211,6 +211,9 @@ CREATE TABLE "Banner" (
 
     CONSTRAINT "Banner_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Pedido_codigo_key" ON "Pedido"("codigo");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Cliente_id_perfil_key" ON "Cliente"("id_perfil");
