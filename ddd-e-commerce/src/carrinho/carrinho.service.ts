@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCarrinhoDto } from './dto/create-carrinho.dto';
 import { UpdateCarrinhoDto } from './dto/update-carrinho.dto';
@@ -20,7 +20,10 @@ export class CarrinhoService {
 
   // Retorna um carrinho específico por ID
   async findOne(id: number) {
-    return this.prisma.carrinho.findUnique({ where: { id } });
+    return this.prisma.carrinho.findUnique({ 
+      where: { id },
+      include: {produtos: true}
+    });
   }
 
   // Atualiza um carrinho existente
@@ -36,5 +39,29 @@ export class CarrinhoService {
   async remove(id: number) {
     await this.prisma.carrinho.delete({ where: { id } });
     return `Carrinho com ID ${id} removido com sucesso!`;
+  }
+
+  //Retorna os produtos do carrinho
+  async findProdutos (id: number){
+    const carrinho = await this.findOne(id);
+    if (!carrinho){
+      throw new HttpException(
+        "carrinho nao encontrado",
+        HttpStatus.NOT_FOUND,
+        {
+          cause: new Error("Id invalido")
+        })
+    }
+
+    const produtos = carrinho.produtos;
+    if (produtos.length === 0){
+      throw new HttpException(
+        "esse carrinho nao tem produtos",
+        HttpStatus.NOT_FOUND,
+        {
+        cause: new Error ("carrinho vazio")
+        })
+    }
+
   }
 }

@@ -35,6 +35,13 @@ export class CategoriaController {
     return this.categoriaService.findOne(+id);
   }
 
+  @Get(':id/produtos')
+  @ApiOperation({ summary: 'Retorna a lista de produtos da categoria' })
+  findProdutos (@Param('id') id:string){
+    return this.categoriaService.findProdutos(+id);
+  }
+
+
   @Patch(':id')
   @ApiOperation({ summary: 'Atualiza uma categoria existente' })
   update(

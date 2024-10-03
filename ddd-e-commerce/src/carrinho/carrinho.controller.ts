@@ -35,6 +35,12 @@ export class CarrinhoController {
     return this.carrinhoService.findOne(+id);
   }
 
+  @Get(':id/produtos')
+  @ApiOperation({ summary: 'Retorna os produtos de um carrinho' })
+  findProdutos(@Param('id') id: string) {
+    return this.carrinhoService.findProdutos(+id);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Atualiza um carrinho existente' })
   update(

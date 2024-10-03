@@ -27,6 +27,12 @@ export class ClienteController {
     return this.clienteService.findOne(+id);
   }
 
+  @Get(':id/favoritados')
+  @ApiOperation({ summary: 'Retorna os produtos favoritos do cliente' })
+  findFavoritados(@Param('id') id: string) {
+    return this.clienteService.findFavoritados(+id);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Atualizar um cliente pelo ID' })
   update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {

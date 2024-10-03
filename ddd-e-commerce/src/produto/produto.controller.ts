@@ -27,6 +27,12 @@ export class ProdutoController {
     return this.produtoService.findOne(+id);
   }
 
+  @Get (':id/avaliacoes')
+  @ApiOperation({ summary: 'Retorna as avaliacoes de um produto' })
+  findAvaliacoes(@Param ('id') id:string){
+    return this.produtoService.findAvaliacoes(+id);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Atualiza um produto existente' })
   update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
