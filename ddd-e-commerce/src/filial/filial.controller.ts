@@ -27,6 +27,13 @@ export class FilialController {
     return this.filialService.findOne(+id);
   }
 
+  
+  @Get(':id/produtos')
+  @ApiOperation({ summary: 'Retorna os produtos de uma filial' })
+  findProdutos(@Param('id') id: string) {
+    return this.filialService.findProdutos(+id);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Atualizar uma filial pelo ID' })
   update(@Param('id') id: string, @Body() updateFilialDto: UpdateFilialDto) {

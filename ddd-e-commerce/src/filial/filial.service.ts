@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateFilialDto } from './dto/create-filial.dto';
 import { UpdateFilialDto } from './dto/update-filial.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ProdutoService } from 'src/produto/produto.service';
 
 @Injectable()
 export class FilialService {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly produtoService: ProdutoService) {}
 
   async create(data: CreateFilialDto) {
     const filialCriada = await this.prisma.filial.create({ data });
@@ -18,7 +21,11 @@ export class FilialService {
   }
 
   async findOne(id: number) {
-    return this.prisma.filial.findUnique({ where: { id } });
+    return this.prisma.filial.findUnique(
+      { 
+        where: { id }, 
+        include: {produtos: true }
+      });
   }
 
   async update(id: number, updateFilialDto: UpdateFilialDto) {
@@ -27,6 +34,45 @@ export class FilialService {
       data: updateFilialDto,
     });
     return filialAtualizada;
+  }
+
+  async findProdutos (id: number){
+    const filial = await this.findOne(id);
+    if (!filial)
+    {
+      throw new HttpException (
+        "Filial nao encontrada", 
+        HttpStatus.NOT_FOUND, 
+        {cause: new Error ('Id invalido')})
+    }
+
+    const registroProdutos = filial.produtos;
+    if (registroProdutos.length === 0)
+    {
+      throw new HttpException (
+        "essa filial nao possui produtos",
+        HttpStatus.NOT_FOUND
+      )
+    }
+
+    const idProdutos = [];
+    registroProdutos.forEach(registro => {
+      idProdutos.push(registro.id_produto);
+    });
+
+    const produtos = [];
+    for (const id of idProdutos) {
+      const produto = await this.produtoService.findOne (id);
+      
+      if (produto){
+        produtos.push(produto);
+      }
+    }
+
+    return {
+      produtos
+      qtdDeCadaProduto  
+    };
   }
 
   async remove(id: number) {
