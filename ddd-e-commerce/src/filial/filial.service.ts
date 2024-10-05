@@ -37,7 +37,7 @@ export class FilialService {
   }
 
   async findProdutos (id: number){
-    const filial = await this.findOne(id);
+    const filial = await this.findOne(id); //busca a filial por ID
     if (!filial)
     {
       throw new HttpException (
@@ -46,7 +46,7 @@ export class FilialService {
         {cause: new Error ('Id invalido')})
     }
 
-    const registroProdutos = filial.produtos;
+    const registroProdutos = filial.produtos;//busca os registros produto_filial
     if (registroProdutos.length === 0)
     {
       throw new HttpException (
@@ -56,23 +56,26 @@ export class FilialService {
     }
 
     const idProdutos = [];
+    const qtdEstoqueFilial =[];
+    let index = 0; 
     registroProdutos.forEach(registro => {
-      idProdutos.push(registro.id_produto);
+      idProdutos.push(registro.id_produto);//coloca os IDs de cada produto numa lista
+      qtdEstoqueFilial.push(registro.qtd_produto);//coloca a quantidade dos produtos de cada registro nua lista
     });
 
     const produtos = [];
     for (const id of idProdutos) {
-      const produto = await this.produtoService.findOne (id);
+      const produto = await this.produtoService.findOne (id);//percorre a lista de IDs e procura qual produto por ID
       
       if (produto){
-        produtos.push(produto);
+        produtos.push({
+          ...produto, //copia as propriedades do produto 
+          "qtd_estoque": qtdEstoqueFilial[index]}); //Atualiza a qtd_estoque do produto para aquela filial
+        index ++;
       }
     }
 
-    return {
-      produtos
-      qtdDeCadaProduto  
-    };
+    return produtos; //retorna a lista de produtos + a qtd de estoque na filial
   }
 
   async remove(id: number) {

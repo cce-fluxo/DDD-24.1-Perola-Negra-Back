@@ -61,7 +61,7 @@ export class ClienteService {
   }
 
   async findFavoritados (id: number){
-    const cliente = await this.findOne(id);
+    const cliente = await this.findOne(id); //busca o cliente pelo ID
     if (!cliente){
       throw new HttpException (
         "cliente nao encontrado",
@@ -70,7 +70,7 @@ export class ClienteService {
       )
     }
 
-    const registros = cliente.favoritos;
+    const registros = cliente.favoritos; //verifica os registros de registro_favoritado
     if (registros.length === 0){
       throw new HttpException (
         "Cliente nao tem produtos favoritados",
@@ -79,20 +79,23 @@ export class ClienteService {
     }
 
     const produtosFavoritos = [];
-    const idPordutosFvoritos = [];
+    const idProdutosFavoritos = [];
 
-    registros.forEach(registro =>
-      idPordutosFvoritos.push(registro.id_produto)
+    registros.forEach(registro => //pega o ID de cada produto associado ao cliente e coloca numa lista
+      idProdutosFavoritos.push(registro.id_produto)
     );
 
-    for (const id of idPordutosFvoritos) {
-      const produto = await this.produtoService.findOne(id); // Aguardando a resolução da Promise
+    for (const id of idProdutosFavoritos) { 
+      const produto = await this.produtoService.findOne(id); //busca no produtoService qual o produto por ID
       if (produto) {
-          produtosFavoritos.push(produto);
+          produtosFavoritos.push(produto); //joga o produto encontrado numa lista de produtos
+      }
+
+      else {
+        produtosFavoritos.push(`${id} não encontrado`);
+
       }
   }
-
-
 
     return produtosFavoritos;
   }

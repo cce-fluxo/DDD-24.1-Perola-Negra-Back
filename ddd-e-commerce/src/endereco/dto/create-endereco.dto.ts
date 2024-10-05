@@ -4,14 +4,6 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class CreateEnderecoDto {
 
   @ApiProperty({
-    description: 'ID do endereço',
-    example: 1,
-  })
-  @IsNotEmpty()
-  @IsNumber()
-  id: number;
-
-  @ApiProperty({
     description: 'Nome da rua',
     example: 'Rua de 123',
   })
