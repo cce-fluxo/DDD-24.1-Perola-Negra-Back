@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRegistroFavoritadoDto } from './dto/create-registro_favoritado.dto';
 import { UpdateRegistroFavoritadoDto } from './dto/update-registro_favoritado.dto';
@@ -9,9 +9,25 @@ export class RegistroFavoritadoService {
 
   // Cria um novo RegistroFavoritado
   async create(data: CreateRegistroFavoritadoDto) {
-    const RegistroFavoritadoCriado =
-      await this.prisma.registro_favoritado.create({ data });
-    return RegistroFavoritadoCriado;
+
+    const isFavoritado = await this.validar(data)
+
+    if (!isFavoritado)
+    {
+      const RegistroFavoritadoCriado =
+        await this.prisma.registro_favoritado.create({ data });
+      return RegistroFavoritadoCriado;
+    }
+
+    else
+    {
+      throw new HttpException ("Produto ja favoritado", 
+        HttpStatus.CONFLICT,
+        {
+          cause: "O cliete ja favoritou o produto"
+        }
+      )
+    }
   }
 
   // Retorna todos os RegistroFavoritados
@@ -41,5 +57,20 @@ export class RegistroFavoritadoService {
   async remove(id: number) {
     await this.prisma.registro_favoritado.delete({ where: { id } });
     return `RegistroFavoritado com ID ${id} removido com sucesso!`;
+  }
+
+  //valida se o cliente ja favoritou o produto (retorna true se ja foi favoritado e false se nao foi favoritado)
+  async validar (data: CreateRegistroFavoritadoDto){
+    let isFavoritado = false;
+    const registros = await this.findAll();
+
+    for (const registro of registros) {
+      if (registro.id_cliente === data.id_cliente && registro.id_produto === data.id_produto) {
+        isFavoritado = true;
+        break;
+      }
+    }
+
+    return isFavoritado;
   }
 }
