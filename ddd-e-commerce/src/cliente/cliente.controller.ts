@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
@@ -16,7 +24,7 @@ export class ClienteController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Listar todos os clientes' }) 
+  @ApiOperation({ summary: 'Listar todos os clientes' })
   findAll() {
     return this.clienteService.findAll();
   }
@@ -33,6 +41,12 @@ export class ClienteController {
     return this.clienteService.findFavoritados(+id);
   }
 
+  @Get(':id/pedidos')
+  @ApiOperation({ summary: 'Retorna os pedidos do cliente' })
+  findPedidos(@Param('id') id: string) {
+    return this.clienteService.findPedidos(+id);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Atualizar um cliente pelo ID' })
   update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
@@ -45,4 +59,3 @@ export class ClienteController {
     return this.clienteService.remove(+id);
   }
 }
-
