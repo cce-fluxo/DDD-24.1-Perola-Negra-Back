@@ -6,30 +6,33 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private readonly prisma: PrismaService,
-        private readonly userService: ClienteService,
-        private readonly jwtService: JwtService
-    ) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly userService: ClienteService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-    async validateUser(email: string, password: string) {
-        const user = await this.userService.findByEmail(email);
+  async validateUser(email: string, password: string) {
+    const user = await this.userService.findByEmail(email);
 
-        const senha_valida = await bcrypt.compare(password, user.hash_senha);
+    const senha_valida = await bcrypt.compare(password, user.hash_senha);
 
-        if (!user || !(senha_valida)) {
-            throw new Error('Credenciais inválidas');
-        }
-
-        // Usando operador spread para retornar os dados do usuário
-        return { ...user, password: undefined }; 
+    if (!user || !senha_valida) {
+      throw new Error('Credenciais inválidas');
     }
 
-    login (user){
-        const payload = {id: user.id, email: user.email }
-        const jwtToken = this.jwtService.sign(payload, {secret: process.env.JWT_SECRET, expiresIn : '1d' })
-        return {
-            acess_token: jwtToken
-        }
-    }
+    // Usando operador spread para retornar os dados do usuário
+    return { ...user, password: undefined };
+  }
+
+  login(user) {
+    const payload = { id: user.id, email: user.email };
+    const jwtToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '1d',
+    });
+    return {
+      acess_token: jwtToken,
+    };
+  }
 }

@@ -37,9 +37,9 @@ export class ClienteService {
     });
   }
 
-  // async findByEmail(email: string) {
-  //   return this.prisma.cliente.findUnique({ where: { email: email } });
-  // }
+  async findByEmail(email: string) {
+    return this.prisma.cliente.findUnique({ where: { email: email } });
+  }
 
   // Atualiza um cliente existente
   async update(id: number, updateClienteDto: UpdateClienteDto) {

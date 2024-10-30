@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsEmail, IsString, IsDate, IsOptional, Matches } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsEmail,
+  IsString,
+  IsDate,
+  IsOptional,
+  Matches,
+} from 'class-validator';
 import { Type } from 'class-transformer'; // Import necessário para transformar a string em Date
 
 export class CreateClienteDto {
@@ -34,7 +41,9 @@ export class CreateClienteDto {
   })
   @IsNotEmpty()
   @IsString()
-  @Matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, { message: 'CPF deve estar no formato XXX.XXX.XXX-XX' })
+  @Matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
+    message: 'CPF deve estar no formato XXX.XXX.XXX-XX',
+  })
   cpf: string;
 
   @ApiProperty({
@@ -60,6 +69,5 @@ export class CreateClienteDto {
   })
   @IsOptional()
   @IsNotEmpty()
-  id_perfil?: number; 
+  id_perfil?: number;
 }
-
