@@ -28,8 +28,6 @@ export class AuthService {
   login(user) {
     const payload = { id: user.id, email: user.email };
     const jwtToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: '1d',
     });
     return {
       acess_token: jwtToken,
