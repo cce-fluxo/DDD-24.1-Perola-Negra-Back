@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClienteService } from 'src/cliente/cliente.service';
+import { AdministradorService } from 'src/administrador/administrador.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 
@@ -8,7 +9,7 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly userService: ClienteService,
+        private readonly userService: AdministradorService,
         private readonly jwtService: JwtService
     ) {}
 

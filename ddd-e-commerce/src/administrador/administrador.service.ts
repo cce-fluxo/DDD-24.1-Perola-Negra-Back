@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateAdministradorDto } from './dto/create-administrador.dto';
 import { UpdateAdministradorDto } from './dto/update-administrador.dto';
+import * as bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class AdministradorService {
@@ -9,7 +11,12 @@ export class AdministradorService {
 
   // Cria um novo administrador
   async create(data: CreateAdministradorDto) {
-    const administradorCriado = await this.prisma.administrador.create({ data });
+    const administradorCriado = await this.prisma.administrador.create({ 
+      data: { 
+        ...data,
+        hash_senha: await bcrypt.hash(data.hash_senha, 10)
+      }
+    });
     return administradorCriado;
   }
 
@@ -22,6 +29,12 @@ export class AdministradorService {
   async findOne(id: number) {
     return this.prisma.administrador.findUnique({ where: { id } });
   }
+
+  //Retorna um adminsitrador pelo email
+  async findByEmail(email: string){
+    return this.prisma.administrador.findUnique({ where : {email:email} });
+  }
+
 
   // Atualiza um administrador existente
   async update(id: number, updateAdministradorDto: UpdateAdministradorDto) {

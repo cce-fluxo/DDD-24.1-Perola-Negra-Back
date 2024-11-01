@@ -207,7 +207,7 @@ model Registro_produto_filial {
 
 model Administrador {
   id        Int      @id @default(autoincrement())
-  email     String
+  email     String @unique
   hash_senha String
 }
 

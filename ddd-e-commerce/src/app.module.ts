@@ -28,10 +28,11 @@ import { LocalStrategy } from './auth/strategies/localstrategy';
 import { JwtService } from '@nestjs/jwt';
 import { ClienteService } from './cliente/cliente.service';
 import { JwtStrategy } from './auth/strategies/jwt-strategy';
+import { AdministradorService } from './administrador/administrador.service';
 
 @Module({
   imports: [BannerModule, AdministradorModule, PedidoModule, ProdutoModule, CategoriaModule, DescontoModule, FilialModule, EnderecoModule, PagamentoModule, ClienteModule, AvaliacaoModule, PerfilModule, RegistroProdutoDescontoModule, RegistroProdutoCarrinhoModule, RegistroFavoritadoModule, RegistroProdutoFilialModule, RegistroClienteEnderecoModule, RegistroPedidoProdutoModule, CupomModule, CarrinhoModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService, PrismaService, AuthService, LocalStrategy, JwtService, ClienteService, JwtStrategy]
+  providers: [AppService, PrismaService, AuthService, LocalStrategy, JwtService, ClienteService, JwtStrategy, AdministradorService]
 })
 export class AppModule {}
