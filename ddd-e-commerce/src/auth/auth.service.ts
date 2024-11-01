@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClienteService } from 'src/cliente/cliente.service';
+import { AdministradorService } from 'src/administrador/administrador.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly userService: ClienteService,
-    private readonly jwtService: JwtService,
-  ) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly userService: AdministradorService,
+        private readonly jwtService: JwtService
+    ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);

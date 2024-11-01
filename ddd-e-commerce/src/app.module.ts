@@ -28,18 +28,12 @@ import { LocalStrategy } from './auth/strategies/localstrategy';
 import { JwtService } from '@nestjs/jwt';
 import { ClienteService } from './cliente/cliente.service';
 import { JwtStrategy } from './auth/strategies/jwt-strategy';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/guards/jwt.auth.guard';
+import { AdministradorService } from './administrador/administrador.service';
 
 @Module({
   imports: [BannerModule, AuthModule, AdministradorModule, PedidoModule, ProdutoModule, CategoriaModule, DescontoModule, FilialModule, EnderecoModule, PagamentoModule, ClienteModule, AvaliacaoModule, PerfilModule, RegistroProdutoDescontoModule, RegistroProdutoCarrinhoModule, RegistroFavoritadoModule, RegistroProdutoFilialModule, RegistroClienteEnderecoModule, RegistroPedidoProdutoModule, CupomModule, CarrinhoModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService, PrismaService, ClienteService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    }
-  ]
+  providers: [AppService, PrismaService, AuthService, LocalStrategy, JwtService, ClienteService, JwtStrategy, AdministradorService]
 })
 
 
