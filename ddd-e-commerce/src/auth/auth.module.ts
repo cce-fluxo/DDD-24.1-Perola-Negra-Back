@@ -18,6 +18,6 @@ import { AdministradorService } from 'src/administrador/administrador.service';
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, ClienteService, LocalStrategy, JwtService, JwtStrategy, ProdutoService, AdministradorService]
+  providers: [AuthService, PrismaService, ClienteService, LocalStrategy, ProdutoService, AdministradorService]
 })
 export class AuthModule {}
