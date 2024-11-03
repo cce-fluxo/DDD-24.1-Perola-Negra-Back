@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateAdministradorDto } from './dto/create-administrador.dto';
 import { UpdateAdministradorDto } from './dto/update-administrador.dto';
@@ -27,7 +27,15 @@ export class AdministradorService {
 
   // Retorna um administrador específico por ID
   async findOne(id: number) {
-    return this.prisma.administrador.findUnique({ where: { id } });
+    const administrador = await this.prisma.administrador.findUnique({ where: { id } });; //busca o cliente pelo ID
+    if (!administrador){
+      throw new HttpException (
+        "Administrador nao encontrado",
+        HttpStatus.NOT_FOUND,
+        {cause: new Error('Id invalido'),}
+      )
+    }
+    return administrador;
   }
 
   //Retorna um adminsitrador pelo email
