@@ -29,10 +29,10 @@ export class CategoriaController {
     return this.categoriaService.findAll();
   }
 
-  @Get(':id')
+  @Get(':nome')
   @ApiOperation({ summary: 'Retorna uma categoria específica por ID' })
-  findOne(@Param('id') id: string) {
-    return this.categoriaService.findOne(+id);
+  findOne(@Param('nome') nome: string) {
+    return this.categoriaService.findOne(nome);
   }
 
   @Get(':nome/produtos')

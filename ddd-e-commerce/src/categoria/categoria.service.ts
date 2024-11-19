@@ -16,9 +16,9 @@ export class CategoriaService {
     return this.prisma.categoria.findMany();
   }
 
-  findOne(id: number) {
-    return this.prisma.categoria.findUnique({
-      where: { id },
+  findOne(nome: string) {
+    return this.prisma.categoria.findFirst({
+      where: { nome },
       include: { produtos: true },
     });
   }
