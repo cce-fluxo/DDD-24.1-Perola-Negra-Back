@@ -16,12 +16,9 @@ async function bootstrap() {
     //.addTag ('Teste', 'teste do roberto')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document,
-    {
-      swaggerOptions:{
-        
-      }
-    });
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {},
+  });
 
   // Pipes
   app.useGlobalPipes(
@@ -32,7 +29,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3000);
+  await app.listen(443);
 }
 bootstrap();
 //comentario magico

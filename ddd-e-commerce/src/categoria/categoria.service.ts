@@ -36,10 +36,14 @@ export class CategoriaService {
     return `categoria removida com sucesso!`;
   }
 
-  async findProdutos(id: number) {
-    const categoria = await this.findOne(id);
+  async findProdutos(nome: string) {
+    const categoria = await this.prisma.categoria.findFirst({
+      where: { nome },
+      include: { produtos: true },
+    });
 
-    if (!categoria) { //segura esse tratamento de erro pai
+    if (!categoria) {
+      //segura esse tratamento de erro pai
       throw new HttpException(
         'Categoria nao encontrada',
         HttpStatus.NOT_FOUND,
@@ -51,10 +55,7 @@ export class CategoriaService {
 
     const produtos = categoria.produtos;
     if (produtos.length === 0) {
-      throw new HttpException(
-        'Categoria sem produtos',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('Categoria sem produtos', HttpStatus.NOT_FOUND);
     }
 
     return produtos;

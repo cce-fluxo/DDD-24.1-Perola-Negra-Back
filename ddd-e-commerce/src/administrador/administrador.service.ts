@@ -4,18 +4,17 @@ import { CreateAdministradorDto } from './dto/create-administrador.dto';
 import { UpdateAdministradorDto } from './dto/update-administrador.dto';
 import * as bcrypt from 'bcrypt';
 
-
 @Injectable()
 export class AdministradorService {
   constructor(private readonly prisma: PrismaService) {}
 
   // Cria um novo administrador
   async create(data: CreateAdministradorDto) {
-    const administradorCriado = await this.prisma.administrador.create({ 
-      data: { 
+    const administradorCriado = await this.prisma.administrador.create({
+      data: {
         ...data,
-        hash_senha: await bcrypt.hash(data.hash_senha, 10)
-      }
+        hash_senha: await bcrypt.hash(data.hash_senha, 10),
+      },
     });
     return administradorCriado;
   }
@@ -27,22 +26,23 @@ export class AdministradorService {
 
   // Retorna um administrador específico por ID
   async findOne(id: number) {
-    const administrador = await this.prisma.administrador.findUnique({ where: { id } });; //busca o cliente pelo ID
-    if (!administrador){
-      throw new HttpException (
-        "Administrador nao encontrado",
+    const administrador = await this.prisma.administrador.findUnique({
+      where: { id },
+    }); //busca o cliente pelo ID
+    if (!administrador) {
+      throw new HttpException(
+        'Administrador nao encontrado',
         HttpStatus.NOT_FOUND,
-        {cause: new Error('Id invalido'),}
-      )
+        { cause: new Error('Id invalido') },
+      );
     }
     return administrador;
   }
 
   //Retorna um adminsitrador pelo email
-  async findByEmail(email: string){
-    return this.prisma.administrador.findUnique({ where : {email:email} });
+  async findByEmail(email: string) {
+    return this.prisma.administrador.findUnique({ where: { email: email } });
   }
-
 
   // Atualiza um administrador existente
   async update(id: number, updateAdministradorDto: UpdateAdministradorDto) {
@@ -59,4 +59,3 @@ export class AdministradorService {
     return `Administrador com ID ${id} removido com sucesso!`;
   }
 }
-
