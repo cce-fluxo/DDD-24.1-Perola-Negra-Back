@@ -9,7 +9,9 @@ export class RegistroProdutoCarrinhoService {
 
   // Cria um novo registro de produto e carrinho
   async create(data: CreateRegistroProdutoCarrinhoDto) {
-    const registroCriado = await this.prisma.registro_produto_carrinho.create({ data });
+    const registroCriado = await this.prisma.registro_produto_carrinho.create({
+      data,
+    });
     return registroCriado;
   }
 
@@ -23,12 +25,22 @@ export class RegistroProdutoCarrinhoService {
     return this.prisma.registro_produto_carrinho.findUnique({ where: { id } });
   }
 
-  // Atualiza um registro existente
-  async update(id: number, updateRegistroProdutoCarrinhoDto: UpdateRegistroProdutoCarrinhoDto) {
-    const registroAtualizado = await this.prisma.registro_produto_carrinho.update({
-      where: { id },
-      data: updateRegistroProdutoCarrinhoDto,
+  findByCarrinhoId(carrinhoId: number) {
+    return this.prisma.registro_produto_carrinho.findMany({
+      where: { id_carrinho: carrinhoId },
     });
+  }
+
+  // Atualiza um registro existente
+  async update(
+    id: number,
+    updateRegistroProdutoCarrinhoDto: UpdateRegistroProdutoCarrinhoDto,
+  ) {
+    const registroAtualizado =
+      await this.prisma.registro_produto_carrinho.update({
+        where: { id },
+        data: updateRegistroProdutoCarrinhoDto,
+      });
     return registroAtualizado;
   }
 
