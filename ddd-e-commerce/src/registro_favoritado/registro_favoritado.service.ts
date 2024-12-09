@@ -9,24 +9,16 @@ export class RegistroFavoritadoService {
 
   // Cria um novo RegistroFavoritado
   async create(data: CreateRegistroFavoritadoDto) {
+    const isFavoritado = await this.validar(data);
 
-    const isFavoritado = await this.validar(data)
-
-    if (!isFavoritado)
-    {
+    if (!isFavoritado) {
       const RegistroFavoritadoCriado =
         await this.prisma.registro_favoritado.create({ data });
       return RegistroFavoritadoCriado;
-    }
-
-    else
-    {
-      throw new HttpException ("Produto ja favoritado", 
-        HttpStatus.CONFLICT,
-        {
-          cause: "O cliete ja favoritou o produto"
-        }
-      )
+    } else {
+      throw new HttpException('Produto ja favoritado', HttpStatus.CONFLICT, {
+        cause: 'O cliete ja favoritou o produto',
+      });
     }
   }
 
@@ -38,6 +30,13 @@ export class RegistroFavoritadoService {
   // Retorna um RegistroFavoritado específico por ID
   async findOne(id: number) {
     return this.prisma.registro_favoritado.findUnique({ where: { id } });
+  }
+
+  async removeByProdutoECliente(id_produto: number, id_cliente: number) {
+    await this.prisma.registro_favoritado.deleteMany({
+      where: { id_produto, id_cliente },
+    });
+    return `RegistroFavoritado com ProdutoID ${id_produto} e ClienteID ${id_cliente} removido com sucesso!`;
   }
 
   // Atualiza um RegistroFavoritado existente
@@ -60,12 +59,15 @@ export class RegistroFavoritadoService {
   }
 
   //valida se o cliente ja favoritou o produto (retorna true se ja foi favoritado e false se nao foi favoritado)
-  async validar (data: CreateRegistroFavoritadoDto){
+  async validar(data: CreateRegistroFavoritadoDto) {
     let isFavoritado = false;
     const registros = await this.findAll();
 
     for (const registro of registros) {
-      if (registro.id_cliente === data.id_cliente && registro.id_produto === data.id_produto) {
+      if (
+        registro.id_cliente === data.id_cliente &&
+        registro.id_produto === data.id_produto
+      ) {
         isFavoritado = true;
         break;
       }
