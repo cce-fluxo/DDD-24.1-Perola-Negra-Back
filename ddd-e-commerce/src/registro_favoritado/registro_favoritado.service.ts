@@ -32,6 +32,12 @@ export class RegistroFavoritadoService {
     return this.prisma.registro_favoritado.findUnique({ where: { id } });
   }
 
+  async findByProdutoIdClienteId(id_produto: number, id_cliente: number) {
+    return this.prisma.registro_favoritado.findMany({
+      where: { id_produto, id_cliente },
+    });
+  }
+
   async removeByProdutoECliente(id_produto: number, id_cliente: number) {
     await this.prisma.registro_favoritado.deleteMany({
       where: { id_produto, id_cliente },

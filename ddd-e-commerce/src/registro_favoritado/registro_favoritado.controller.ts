@@ -39,6 +39,21 @@ export class RegistroFavoritadoController {
     return this.registroFavoritadoService.findOne(+id);
   }
 
+  @Get(':id_produto/:id_cliente')
+  @ApiOperation({
+    summary:
+      'Retorna todos os registros de produto favoritado por ID de produto e cliente',
+  })
+  findByProdutoIdClienteId(
+    @Param('id_produto') id_produto: string,
+    @Param('id_cliente') id_cliente: string,
+  ) {
+    return this.registroFavoritadoService.findByProdutoIdClienteId(
+      +id_produto,
+      +id_cliente,
+    );
+  }
+
   @Patch(':id')
   @ApiOperation({
     summary: 'Atualiza um registro de produto favoritado existente',
