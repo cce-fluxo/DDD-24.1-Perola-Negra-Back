@@ -25,6 +25,17 @@ export class RegistroClienteEnderecoService {
     return this.prisma.registro_cliente_endereco.findUnique({ where: { id } });
   }
 
+  findByUser(id: number) {
+    // retorna lista dos enderecos do cliente logado
+    // ex: /registro-cliente-endereco/cliente/1
+    return this.prisma.registro_cliente_endereco.findMany({
+      where: {
+        id_cliente: id,
+      },
+      //include: { endereco: true },
+    });
+  }
+
   // Atualiza um registro existente
   async update(
     id: number,

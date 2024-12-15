@@ -71,13 +71,13 @@ model Pedido {
   VL_frete      Float
   VL_total      Float
   clienteId     Int
-  cliente       Cliente @relation(fields: [clienteId], references: [id]) // relacao many-to-one entre Pedido e Cliente, onde um pedido pertence a um cliente
+  cliente       Cliente @relation(fields: [clienteId], references: [id]) // ao deletar cliente, deletar pedido
   enderecoId    Int
   endereco      Endereco @relation(fields: [enderecoId], references: [id]) // relacao many-to-one entre Pedido e Endereco, onde um pedido tem um endereco de entrega
   cupomId       Int
   cupom         Cupom @relation(fields: [cupomId], references: [id]) // relacao many-to-one entre Pedido e Cupom, onde um pedido tem um cupom de desconto
   pagamentoId   Int
-  pagamento     Pagamento @relation(fields: [pagamentoId], references: [id]) // relacao many-to-one entre Pedido e Pagamento, onde um pedido tem um pagamento
+  pagamento     Pagamento @relation(fields: [pagamentoId], references: [id])
   produtos      Registro_pedido_produto[]
 }
 
@@ -86,8 +86,8 @@ model Registro_pedido_produto {
   qtd_produto Int
   id_pedido Int
   id_produto Int
-  pedido    Pedido @relation(fields: [id_pedido], references: [id])
-  produto   Produto @relation(fields: [id_produto], references: [id])
+  pedido    Pedido @relation(fields: [id_pedido], references: [id], onDelete: Cascade) // ao deletar pedido, deletar registro
+  produto   Produto @relation(fields: [id_produto], references: [id], onDelete: Cascade) // ao deletar produto, deletar registro
 }
 
 model Cliente {
@@ -103,7 +103,7 @@ model Cliente {
   enderecos     Registro_cliente_endereco[]
   avaliacoes    Avaliacao[]
   id_perfil     Int? @unique // 1-1 com perfil
-  perfil        Perfil? @relation(fields: [id_perfil], references: [id]) // relacao one-to-one entre Cliente e Perfil, onde um cliente tem um perfil
+  perfil        Perfil? @relation(fields: [id_perfil], references: [id], onDelete: Cascade) // ao deletar cliente, deletar perfil
   carrinho      Carrinho?
 }
 
@@ -140,7 +140,7 @@ model Carrinho {
   id          Int      @id @default(autoincrement())
   produtos    Registro_produto_carrinho[]
   clienteId   Int @unique
-  cliente     Cliente @relation(fields: [clienteId], references: [id])
+  cliente     Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade) // ao deletar cliente, deletar carrinho
 }
 
 
@@ -148,17 +148,17 @@ model Registro_produto_carrinho {
   id          Int      @id @default(autoincrement())
   qtd_produto Int
   id_produto  Int
-  produto     Produto @relation(fields: [id_produto], references: [id])
+  produto     Produto @relation(fields: [id_produto], references: [id], onDelete: Cascade) // ao deletar produto, deletar registro
   id_carrinho Int
-  carrinho    Carrinho @relation(fields: [id_carrinho], references: [id])
+  carrinho    Carrinho @relation(fields: [id_carrinho], references: [id], onDelete: Cascade) // ao deletar carrinho, deletar registro
 }
 
 model Registro_favoritado  {
   id          Int      @id @default(autoincrement())
   id_produto  Int
   id_cliente  Int
-  produto     Produto @relation(fields: [id_produto], references: [id])
-  cliente     Cliente @relation(fields: [id_cliente], references: [id])
+  produto     Produto @relation(fields: [id_produto], references: [id], onDelete: Cascade) // ao deletar produto, deletar registro
+  cliente     Cliente @relation(fields: [id_cliente], references: [id], onDelete: Cascade) // ao deletar cliente, deletar registro
 }
 
 model Registro_cliente_endereco {
@@ -166,15 +166,16 @@ model Registro_cliente_endereco {
   nome     String
   id_cliente Int
   id_endereco Int
-  cliente   Cliente @relation(fields: [id_cliente], references: [id])
-  endereco  Endereco @relation(fields: [id_endereco], references: [id])
+  cliente   Cliente @relation(fields: [id_cliente], references: [id], onDelete: Cascade) // ao deletar cliente, deletar registro
+  endereco  Endereco @relation(fields: [id_endereco], references: [id], onDelete: Cascade) // ao deletar endereco, deletar registro
 }
 
 model Perfil {
   id        Int      @id @default(autoincrement())
   nome      String
   descricao String
-  cliente   Cliente? // relacao one-to-one entre Perfil e Cliente, onde um perfil pertence a um cliente
+  cliente   Cliente?
+    // relacao one-to-one entre Perfil e Cliente, onde um perfil pertence a um cliente 
 }
 
 model Avaliacao {
@@ -182,7 +183,7 @@ model Avaliacao {
   descricao  String
   estrelas   Int
   id_produto Int
-  produto    Produto @relation(fields: [id_produto], references: [id])
+  produto    Produto @relation(fields: [id_produto], references: [id], onDelete: Cascade) // ao deletar produto, deletar avaliacao
   id_cliente Int
   cliente    Cliente @relation(fields: [id_cliente], references: [id])
 }
@@ -192,7 +193,7 @@ model Filial {
   nome      String
   produtos  Registro_produto_filial[]
   id_endereco Int @unique
-  endereco  Endereco? @relation(fields: [id_endereco], references: [id])
+  endereco  Endereco? @relation(fields: [id_endereco], references: [id], onDelete: Cascade) // ao deletar filial, deletar endereco
   // falta 1-1 com endereco
 }
 
@@ -201,8 +202,8 @@ model Registro_produto_filial {
   qtd_produto Int
   id_produto Int
   id_filial Int
-  produto   Produto @relation(fields: [id_produto], references: [id])
-  filial    Filial @relation(fields: [id_filial], references: [id])
+  produto   Produto @relation(fields: [id_produto], references: [id] ,onDelete: Cascade) // ao deletar produto, deletar registro
+  filial    Filial @relation(fields: [id_filial], references: [id] ,onDelete: Cascade) // ao deletar filial, deletar registro
 }
 
 model Administrador {

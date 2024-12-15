@@ -5,12 +5,10 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class EnderecoService {
-
-  constructor(private readonly prisma: PrismaService ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateEnderecoDto) {
-    const enderecoCriado = await this.prisma.endereco.create({data})
-    return enderecoCriado;
+    return this.prisma.endereco.create({ data });
   }
 
   findAll() {
@@ -18,7 +16,7 @@ export class EnderecoService {
   }
 
   findOne(id: number) {
-    return this.prisma.endereco.findUnique({where: {id}});
+    return this.prisma.endereco.findUnique({ where: { id } });
   }
 
   async update(id: number, updateenderecoDto: UpdateEnderecoDto) {
@@ -30,8 +28,7 @@ export class EnderecoService {
   }
 
   async remove(id: number) {
-    await this.prisma.endereco.delete({where: {id}});
-    return `Endereco removido com sucesso!`
-
+    await this.prisma.endereco.delete({ where: { id } });
+    return `Endereco removido com sucesso!`;
   }
 }

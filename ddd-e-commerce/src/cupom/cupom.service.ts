@@ -23,6 +23,10 @@ export class CupomService {
     return this.prisma.cupom.findUnique({ where: { id } });
   }
 
+  async findByCode(codigo: string) {
+    return this.prisma.cupom.findMany({ where: { codigo } });
+  }
+
   // Atualiza um cupom existente
   async update(id: number, updateCupomDto: UpdateCupomDto) {
     const cupomAtualizado = await this.prisma.cupom.update({

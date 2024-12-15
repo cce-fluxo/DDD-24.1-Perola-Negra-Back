@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CupomService } from './cupom.service';
 import { CreateCupomDto } from './dto/create-cupom.dto';
 import { UpdateCupomDto } from './dto/update-cupom.dto';
@@ -19,6 +27,12 @@ export class CupomController {
   @ApiOperation({ summary: 'Listar todos os cupons' })
   findAll() {
     return this.cupomService.findAll();
+  }
+
+  @Get('codigo/:codigo')
+  @ApiOperation({ summary: 'Obter um cupom pelo código' })
+  findByCode(@Param('codigo') codigo: string) {
+    return this.cupomService.findByCode(codigo);
   }
 
   @Get(':id')

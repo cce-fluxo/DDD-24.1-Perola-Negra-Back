@@ -7,11 +7,11 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private readonly prisma: PrismaService,
-        private readonly userService: AdministradorService,
-        private readonly jwtService: JwtService
-    ) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly userService: AdministradorService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
@@ -28,10 +28,16 @@ export class AuthService {
 
   login(user) {
     const payload = { id: user.id, email: user.email };
-    const jwtToken = this.jwtService.sign(payload, {
-    });
+    const jwtToken = this.jwtService.sign(payload, {});
     return {
       acess_token: jwtToken,
     };
   }
 }
+
+// exemplo de uso do login:
+// POST http://localhost:3000/auth/login
+// {
+//     "email": "
+//     "senha": "123456"
+// }
