@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
@@ -38,8 +39,18 @@ export class ClienteService {
   }
 
   async findByEmail(email: string) {
-    return this.prisma.cliente.findUnique({ where: { email: email } });
+    const cliente = await this.prisma.cliente.findUnique({
+      where: { email:email },
+    });
+    if (!cliente) {
+      throw new HttpException(
+        'Email não cadastrado.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return cliente;
   }
+  
 
   // Atualiza um cliente existente
   async update(id: number, updateClienteDto: UpdateClienteDto) {
