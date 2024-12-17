@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsEmail, IsString, IsDate, IsOptional, Matches } from 'class-validator';
 import { Type } from 'class-transformer'; // Import necessário para transformar a string em Date

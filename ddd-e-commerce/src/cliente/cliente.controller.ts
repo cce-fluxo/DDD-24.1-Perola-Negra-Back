@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
@@ -25,6 +26,12 @@ export class ClienteController {
   @ApiOperation({ summary: 'Obter um cliente pelo ID' })
   findOne(@Param('id') id: string) {
     return this.clienteService.findOne(+id);
+  }
+
+  @Get('email/:email')
+  @ApiOperation({ summary: 'Obter um cliente pelo email' })
+  findById(@Param('email') email: string) {
+    return this.clienteService.findByEmail(email);
   }
 
   @Get(':id/favoritados')
